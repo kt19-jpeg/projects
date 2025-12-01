@@ -184,7 +184,8 @@ Requirements:
 5. Use proper date/time functions for TIMESTAMP columns
 6. Make sure the query is syntactically correct for PostgreSQL
 7. Add helpful column aliases using AS
-
+8. Use quoted table names: FROM "Customer" c . Reference columns with aliases: c."CustomerID" instead of "Customer"."CustomerID".Apply this to all tables in FROM and JOIN clauses
+9.All values in WHERE clauses wrapped in single quotes (e.g., WHERE c."CustomerID" = '1', od."ProductID" = '68')
 Generate the SQL query:"""
 
     try:
@@ -207,37 +208,50 @@ Generate the SQL query:"""
 
 def main():
     require_login()
-    st.title("🤖 AI-Powered SQL Query Assistant")
-    st.markdown("Ask questions in natural language, and I will generate SQL queries for you to review and run!")
+    st.title("🎯 AI SQL Wizard - Your Data Genie!")
+    st.markdown("✨ Chat with your database like magic! Ask anything in plain English and watch the SQL spells appear!")
     st.markdown("---")
 
-
-    st.sidebar.title("💡 Example Questions")
+    st.sidebar.title("💡 Inspiration Station")
     st.sidebar.markdown("""
-    Try asking questions like:
+    🚀 Try these magical queries:
+    
+    **👥 Counts:**
+    - How many customers do we have by countries?
                         
-    **Demographics:**
-    - How many patients do we have by gender?
-                        
-    **Admissions:**
-    - What is the average length of stay?                      
+    **🏥 Last order of the customer:**
+    - What is last the order date of customerid = 70 ?                      
     """)
+
     st.sidebar.markdown("---")
     st.sidebar.info("""
-        🩼**How it works:**
-        1. Enter your question in plain English
-        2. AI generates SQL query
-        3. Review and optionally edit the query
-        4. Click "Run Query" to execute           
+        🪄 **Your SQL Journey:**
+        1. 💬 Ask your question in everyday language
+        2. 🤖 AI crafts the perfect SQL spell
+        3. 👀 Review and tweak if you're feeling adventurous
+        4. ▶️ Hit "Run Query" and watch the magic happen!           
     """)
 
     st.sidebar.markdown("---")
-    if st.sidebar.button("🚪Logout"):
+
+    # NEW FEATURE: Quick Stats Dashboard
+    st.sidebar.markdown("### 📈 Your Query Stats")
+    if 'query_history' in st.session_state and st.session_state.query_history:
+        total_queries = len(st.session_state.query_history)
+        total_rows = sum(item['rows'] for item in st.session_state.query_history)
+        st.sidebar.metric("🎯 Queries Run", total_queries)
+        st.sidebar.metric("📊 Total Rows Fetched", f"{total_rows:,}")
+        st.sidebar.markdown(f"🔥 You're on fire! Keep exploring!")
+    else:
+        st.sidebar.markdown("🌟 *No queries yet - let's get started!*")
+
+    st.sidebar.markdown("---")
+
+    if st.sidebar.button("🚪 Logout"):
         st.session_state.logged_in = False
         st.rerun()
 
     # Init state
-
     if 'query_history' not in st.session_state:
         st.session_state.query_history = []
     if 'generated_sql' not in st.session_state:
@@ -245,48 +259,43 @@ def main():
     if 'current_question' not in st.session_state:
         st.session_state.current_question = None
 
-
     # main input
-
     user_question = st.text_area(
-        " What would you like to know?",
-        height=100, 
-        placeholder="What is the average length of stay?    "
+        "🗣️ What would you like to discover?",
+        height=100,
+        placeholder="e.g., What is the average length of stay? 🤔"
     )
 
     col1, col2, col3 = st.columns([1, 1, 4])
-    
+
     with col1:
-        generate_button = st.button(" Generate SQL", type="primary", width="stretch")
+        generate_button = st.button("🪄 Generate SQL", type="primary", use_container_width=True)
 
     with col2:
-        if st.button(" Clear History", width="stretch"):
+        if st.button("🧹 Clear History", use_container_width=True):
             st.session_state.query_history = []
             st.session_state.generated_sql = None
             st.session_state.current_question = None
 
     if generate_button and user_question:
         user_question = user_question.strip()
-
         if st.session_state.current_question != user_question:
             st.session_state.generated_sql = None
             st.session_state.current_question = None
-            
 
-
-        with st.spinner("🧠 AI is thinking and generating SQL..."):
+        with st.spinner("🧠 AI brain is working its magic... brewing your SQL potion! ✨"):
             sql_query = generate_sql_with_gpt(user_question)
-            if sql_query:        
+            if sql_query:
                 st.session_state.generated_sql = sql_query
                 st.session_state.current_question = user_question
 
     if st.session_state.generated_sql:
         st.markdown("---")
-        st.subheader("Generated SQL Query")
-        st.info(f"**Question:** {st.session_state.current_question}")
+        st.subheader("🎨 Your Custom SQL Recipe")
+        st.info(f"**💭 Your Question:** {st.session_state.current_question}")
 
         edited_sql = st.text_area(
-            "Review and edit the SQL query if needed:", 
+            "👨‍💻 Review and edit the SQL query if needed (or just trust the AI!):",
             value=st.session_state.generated_sql,
             height=200,
         )
@@ -294,41 +303,44 @@ def main():
         col1, col2 = st.columns([1, 5])
 
         with col1:
-            run_button = st.button("Run Query", type="primary", width="stretch")
+            run_button = st.button("▶️ Run Query", type="primary", use_container_width=True)
 
         if run_button:
-            with st.spinner("Executing query ..."):
+            with st.spinner("⚡ Executing query... fetching your data treasures! 💎"):
                 df = run_query(edited_sql)
-                
+
                 if df is not None:
                     st.session_state.query_history.append(
-                        {'question': user_question, 
-                        'sql': edited_sql, 
-                        'rows': len(df)}
+                        {'question': user_question,
+                         'sql': edited_sql,
+                         'rows': len(df)}
                     )
 
                     st.markdown("---")
-                    st.subheader("📊 Query Results")
-                    st.success(f"✅ Query returned {len(df)} rows")
-                    st.dataframe(df, width="stretch")
-
+                    st.subheader("📊 Your Data Treasures!")
+                    st.success(f"🎉 Awesome! Query returned {len(df)} rows of pure gold!")
+                    st.dataframe(df, use_container_width=True)
 
     if st.session_state.query_history:
         st.markdown('---')
-        st.subheader("📜 Query History")
+        st.subheader("📜 Your Query Adventure Log")
+        st.markdown(f"*Showing your last 5 adventures (Total: {len(st.session_state.query_history)} queries)*")
+
         for idx, item in enumerate(reversed(st.session_state.query_history[-5:])):
-            with st.expander(f"Query {len(st.session_state.query_history)-idx}: {item['question'][:60]}..."):
-                st.markdown(f'**Question:** {item["question"]}')
+            with st.expander(f"🔍 Query #{len(st.session_state.query_history)-idx}: {item['question'][:60]}..."):
+                st.markdown(f'**💭 Question:** {item["question"]}')
                 st.code(item["sql"], language="sql")
-                st.caption(f'Returned {item["rows"]} rows')
-                if st.button(f"Re-run this query", key=f"rerun_{idx}"):
+                st.caption(f'✨ Returned {item["rows"]} rows')
+
+                if st.button(f"🔄 Re-run this query", key=f"rerun_{idx}"):
                     df = run_query(item["sql"])
                     if df is not None:
-                        st.dataframe(df, width="stretch")
+                        st.dataframe(df, use_container_width=True)
 
 
 if __name__ == "__main__":
     main()
+
 
 
 
