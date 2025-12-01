@@ -216,10 +216,10 @@ def main():
     st.sidebar.markdown("""
     🚀 Try these magical queries:
     
-    **👥 Counts:**
+    ** 🖩 Counts:**
     - How many customers do we have by countries?
                         
-    **🏥 Last order of the customer:**
+    ** 🖩 Last order of the customer:**
     - What is last the order date of customerid = 70 ?                      
     """)
 
@@ -340,6 +340,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
