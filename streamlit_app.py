@@ -10,8 +10,8 @@ import bcrypt
 
 load_dotenv()  # reads variables from a .env file and sets them in os.environ
 
-OPENAI_API_KEY = st.secrets("OPENAI_API_KEY")
-HASHED_PASSWORD = st.secrets("HASHED_PASSWORD").encode("utf-8")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+HASHED_PASSWORD = os.getenv("HASHED_PASSWORD").encode("utf-8")
 
 
 # Database schema for context
@@ -329,4 +329,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
