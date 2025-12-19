@@ -125,7 +125,7 @@ def main() -> None:
     violent_rate = safe_rate(df2[TARGET_COL])
     print(f"\nViolent rate: {violent_rate:.3f}")
 
-    # If imbalanced, stratify by target (rubric expects you to justify)
+   
     # We'll stratify by default since violent is typically minority.
     stratify_needed = True
     print("\nStratification decision:")
@@ -186,7 +186,7 @@ def main() -> None:
     print("Saved correlation plot:", corr_path.resolve())
 
     # -------------------------
-    # 6) Profiling (ydata-profiling) – optional but rubric mentions it
+    # 6) Profiling (ydata-profiling) 
     # -------------------------
     profile_path = OUT_DIR / "crime_profile_report.html"
     try:
@@ -202,7 +202,7 @@ def main() -> None:
         print("Rubric allows similar tools; you can also use pandas describe + missingness as backup.")
 
     # -------------------------
-    # 7) Observations + cleanup tasks (rubric)
+    # 7) Observations + cleanup tasks
     # -------------------------
     print("\n=== Observations (summary) ===")
     print("- Target is imbalanced → prefer F1-score over accuracy.")
