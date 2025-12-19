@@ -1,0 +1,9 @@
+run_id,model,use_pca,tuned,f1,artifact_dir
+gboost__pca0__tuned0,gboost,False,False,0.13020561280212736,/Users/kavyansh/IdeaProjects/ml_project/buffalo_crime/models/experiments/gboost__pca0__tuned0
+gboost__pca1__tuned0,gboost,True,False,0.11933243295388771,/Users/kavyansh/IdeaProjects/ml_project/buffalo_crime/models/experiments/gboost__pca1__tuned0
+et__pca1__tuned0,et,True,False,0.11723905399547228,/Users/kavyansh/IdeaProjects/ml_project/buffalo_crime/models/experiments/et__pca1__tuned0
+et__pca0__tuned0,et,False,False,0.013772487054929804,/Users/kavyansh/IdeaProjects/ml_project/buffalo_crime/models/experiments/et__pca0__tuned0
+logreg__pca0__tuned0,logreg,False,False,0.00010798552993898818,/Users/kavyansh/IdeaProjects/ml_project/buffalo_crime/models/experiments/logreg__pca0__tuned0
+logreg__pca1__tuned0,logreg,True,False,0.0,/Users/kavyansh/IdeaProjects/ml_project/buffalo_crime/models/experiments/logreg__pca1__tuned0
+ridge__pca0__tuned0,ridge,False,False,0.0,/Users/kavyansh/IdeaProjects/ml_project/buffalo_crime/models/experiments/ridge__pca0__tuned0
+ridge__pca1__tuned0,ridge,True,False,0.0,/Users/kavyansh/IdeaProjects/ml_project/buffalo_crime/models/experiments/ridge__pca1__tuned0

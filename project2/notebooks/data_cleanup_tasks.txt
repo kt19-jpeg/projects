@@ -1,0 +1,7 @@
+1. Drop rows with missing target (violent).
+2. Impute numeric missing values using median (hour_of_day, latitude, longitude).
+3. Impute categorical missing values using most_frequent (district/neighborhood/day/zip).
+4. One-hot encode categorical features with handle_unknown='ignore'.
+5. Scale numeric features (StandardScaler).
+6. Use stratified train/test split on target due to class imbalance.
+7. Check and handle out-of-range hour_of_day values (must be 0–23).

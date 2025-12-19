@@ -1,0 +1,24 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: crime_api
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_TITLE=Crime Violence Predictor
+      - MODEL_PATH=models/best_model.pkl
+
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    container_name: crime_ui
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+      - OPTIONS_PATH=streamlit/options.json
+    depends_on:
+      - api
