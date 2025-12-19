@@ -1,4 +1,4 @@
-# projects
+# project1
 🤖 Natural Language SQL Agent
 
 Talk to your database in plain English
@@ -28,3 +28,7 @@ Skipping the "how do I write this?" phase
 
 #link
 https://sqlagent101.streamlit.app/
+
+#project2
+
+
